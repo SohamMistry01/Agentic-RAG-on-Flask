@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agentic RAG</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Know About LangChain & LangGraph - Agentic RAG Implementation</h1>
+        <form method="post">
+            <input type="text" name="query" placeholder="Ask a question..." required style="width: 60%; padding: 8px;">
+            <button type="submit">Ask</button>
+        </form>
+        {% if response %}
+        <div class="response">
+            <h2>Your Question:</h2>
+            <p>{{ user_query }}</p>
+            <h2>Response:</h2>
+            <p>{{ response }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html> 

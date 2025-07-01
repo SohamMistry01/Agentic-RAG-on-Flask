@@ -1,0 +1,13 @@
+flask
+langchain
+langgraph
+langchain-groq
+langchain-community
+langchain-text-splitters
+faiss-cpu
+pydantic
+typing-extensions
+python-dotenv 
+langchain-huggingface
+sentence-transformers
+bs4
