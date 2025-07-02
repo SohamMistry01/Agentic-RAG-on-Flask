@@ -1,13 +1,15 @@
-# Agentic RAG: Know About LangChain & LangGraph
+# Agentic RAG: Dynamic Agentic Retrieval-Augmented Generation
 
-A modern Flask web application demonstrating an Agentic Retrieval-Augmented Generation (RAG) pipeline using LangChain, LangGraph, HuggingFace Embeddings, and Groq LLMs. This project allows users to ask questions about LangChain and LangGraph, retrieving and generating answers with advanced agentic workflows.
+A modern Flask web application demonstrating an Agentic Retrieval-Augmented Generation (RAG) pipeline using LangChain, LangGraph, HuggingFace Embeddings, and Groq LLMs. This project allows users to ask questions about **any URL**—the app dynamically loads, embeds, and retrieves from the provided web page, then uses an agentic workflow to generate answers with step-by-step logic.
 
 ## Features
-- **Agentic RAG Pipeline**: Combines retrieval and generation with agent-based decision logic.
-- **LangChain & LangGraph**: Utilizes state-of-the-art libraries for composable LLM workflows.
+- **Dynamic URL RAG**: Ask questions about any web page by providing its URL.
+- **Agentic Workflow**: Combines retrieval, grading, rewriting, and generation with agent-based decision logic (see debug trace in terminal).
+- **LangChain & LangGraph**: State-of-the-art libraries for composable LLM workflows.
 - **HuggingFace Embeddings**: For semantic document retrieval.
 - **Groq LLM Integration**: Fast, high-quality language model responses.
-- **Modern Dark-Themed UI**: User-friendly and aesthetic web interface.
+- **Modern UI**: User-friendly, dark-themed web interface.
+- **Terminal Debug Trace**: See step-by-step agentic reasoning in your terminal (e.g., `---CALL AGENT---`, `---CHECK RELEVANCE---`, etc.).
 
 ## Setup Instructions
 
@@ -45,8 +47,13 @@ A modern Flask web application demonstrating an Agentic Retrieval-Augmented Gene
    Visit [http://127.0.0.1:5000/](http://127.0.0.1:5000/) in your browser.
 
 ## Usage
-- Enter your question about LangChain or LangGraph in the input box and submit.
-- The app will retrieve relevant documents, grade their relevance, and generate a response using the agentic workflow.
+- Enter a URL and your question in the input boxes and submit.
+- The app will:
+  1. Load and embed the web page.
+  2. Retrieve relevant chunks using semantic search.
+  3. Use an agentic workflow to decide whether to retrieve, rewrite, or generate.
+  4. Show the final answer in the UI.
+- **Debug Trace**: See the step-by-step agentic reasoning in your terminal (e.g., `---CALL AGENT---`, `---CHECK RELEVANCE---`, `---GENERATE---`).
 
 ## Project Structure
 ```
@@ -59,6 +66,18 @@ Agentic-RAG/
   static/           # CSS and static assets
   templates/        # HTML templates
 ```
+
+## Optimization Tips
+- **Use a Faster Model**: Swap to a smaller or more optimized LLM (e.g., `llama-3-8b`, `gpt-3.5-turbo`) for faster responses.
+- **Increase Chunk Size**: In `tools.py`, use a larger `chunk_size` and smaller `chunk_overlap` in the text splitter to reduce retrieval time.
+- **Limit Retriever Results**: Set `retriever.search_kwargs = {'k': 2}` to reduce LLM context size.
+- **Cache Vectorstores**: If you expect repeated queries for the same URL, cache the embeddings/vectorstore.
+- **Profile Your Pipeline**: Use Python's `time` module to find bottlenecks.
+
+## Troubleshooting
+- **Only `---CALL AGENT---` Appears in Debug**: This means the agent is not receiving tools. Make sure you are passing tools via the `config` and that your `agent` node checks both `config['tools']` and `config['configurable']['tools']`.
+- **Slow Responses**: Try a smaller model, increase chunk size, or limit retriever results as above.
+- **Tool Not Called**: Make your tool description very explicit (e.g., "ALWAYS use this tool to answer any question about the provided URL.").
 
 ## Credits
 - [LangChain](https://python.langchain.com/)

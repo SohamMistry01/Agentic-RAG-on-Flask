@@ -7,17 +7,30 @@
 </head>
 <body>
     <div class="container">
-        <h1>Know About LangChain & LangGraph - Agentic RAG Implementation</h1>
-        <form method="post">
-            <input type="text" name="query" placeholder="Ask a question..." required style="width: 60%; padding: 8px;">
+        <h1>Talk with URLs - Agentic RAG Implementation</h1>
+        <form method="post" style="flex-direction: column; align-items: center; gap: 12px;">
+            <input type="url" name="url" placeholder="Paste a URL..." class="url-input" required>
+            <input type="text" name="query" placeholder="Ask a question..." required>
             <button type="submit">Ask</button>
         </form>
         {% if response %}
         <div class="response">
+            {% if url %}
+            <h2>URL:</h2>
+            <p><a href="{{ url }}" target="_blank" style="color: #7f9cf5; word-break: break-all;">{{ url }}</a></p>
+            {% endif %}
             <h2>Your Question:</h2>
             <p>{{ user_query }}</p>
             <h2>Response:</h2>
-            <p>{{ response }}</p>
+            <div class="markdown-body">{{ response | markdown }}</div>
+            {% if tool_called is not none %}
+                <h2>Tool Call:</h2>
+                <p>{{ 'Yes' if tool_called else 'No' }}</p>
+            {% endif %}
+            {% if debug_output %}
+            <h2>Debug Trace:</h2>
+            <pre style="background:#222;color:#eee;padding:1em;border-radius:8px;overflow-x:auto;max-height:300px;">{{ debug_output }}</pre>
+            {% endif %}
         </div>
         {% endif %}
     </div>
